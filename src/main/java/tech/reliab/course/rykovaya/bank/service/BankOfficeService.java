@@ -25,9 +25,9 @@ public interface BankOfficeService {
     /*Вычитание банкомата из офиса, и, соответственно, вычитание банкомата из банка, которому
      * принадлежит данный офис, если указанный банкомат принадлежит офису*/
     void deleteATM(BankOffice office, BankATM bankATM);
-
+    //Добавить сотрудника
     void addEmployee(BankOffice office, Employee employee);
-
+    //Удалить сотрудника
     void deleteEmployee(BankOffice office, Employee employee);
 
 }

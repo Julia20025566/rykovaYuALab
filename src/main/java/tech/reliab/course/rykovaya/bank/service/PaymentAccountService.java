@@ -15,6 +15,6 @@ public interface PaymentAccountService {
 
     //ввести новый платёжный счёт
     void addPayment(Integer id, User user, Bank bank );
-
+    //Удалить платежный счет
     void DeletePayment(User user, Bank bank, PaymentAccount paymentAccount);
 }

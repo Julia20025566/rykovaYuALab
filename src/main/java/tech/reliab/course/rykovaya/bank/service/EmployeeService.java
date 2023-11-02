@@ -21,7 +21,7 @@ public interface EmployeeService {
     //Направить работника обслуживать банкомат
     void setWorkerToBankomat(BankATM bankATM, Employee employee);
 
-    //Прекратить чтобы сотрудник обслуживал банкомат
+    //Прекратить обслуживание банкомата сотрудником
     void removeWorkerFromBankomat(BankATM bankATM, Employee employee);
 
 }
