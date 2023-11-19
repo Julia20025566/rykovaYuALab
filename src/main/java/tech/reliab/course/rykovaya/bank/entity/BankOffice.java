@@ -72,6 +72,12 @@ public class BankOffice{
         else{
             str += "\nНельзя внести деньги";
         }
+        if (mayApplyCredit){
+            str += "\nВыдают кредит";
+        }
+        else{
+            str += "\nНе выдают кредит";
+        }
         str += "\nДенежная сумма: " + String.format("%.2f",money) +
                 "\nАрендная плата: " + String.format("%.2f",rentCost);
 

@@ -4,6 +4,7 @@ import tech.reliab.course.rykovaya.bank.entity.Bank;
 import tech.reliab.course.rykovaya.bank.entity.BankATM;
 import tech.reliab.course.rykovaya.bank.entity.BankOffice;
 import tech.reliab.course.rykovaya.bank.entity.Employee;
+import tech.reliab.course.rykovaya.bank.exceptions.EmployeeException;
 import tech.reliab.course.rykovaya.bank.service.EmployeeService;
 
 import java.util.Date;
@@ -37,16 +38,18 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public void setWorkerToBankomat(BankATM bankATM, Employee employee){
-        if (!Objects.equals(bankATM.getBankOffice(),employee.getBankOffice())){
-            System.out.println("Рабочий и банкомат не находятся в 1 офисе");
-        }
-        else if (Objects.equals(bankATM.getEmployee(),employee))
-            return;
-        else {
+        try{
+            if (!Objects.equals(bankATM.getBankOffice(),employee.getBankOffice())){
+                throw new EmployeeException("Попытка привязать рабочего с банкоматом","Рабочий и банкомат не находятся в 1 офисе");
+            }
+            if (Objects.equals(bankATM.getEmployee(),employee))
+                return;
             employee.setBankATM(bankATM);
             bankATM.setEmployee(employee);
             AtmServiceImpl atmService = new AtmServiceImpl();
             atmService.turnOnATM(bankATM);
+        } catch (EmployeeException e) {
+            throw new RuntimeException(e);
         }
     }
 
@@ -54,6 +57,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     public void removeWorkerFromBankomat(BankATM bankATM, Employee employee){
         if (!Objects.equals(employee.getBankATM(),bankATM))
             return;
+
         AtmServiceImpl atmService = new AtmServiceImpl();
         bankATM.setEmployee(null);
         employee.setBankATM(null);

@@ -1,6 +1,7 @@
 package tech.reliab.course.rykovaya.bank.service.impl;
 
 import tech.reliab.course.rykovaya.bank.entity.*;
+import tech.reliab.course.rykovaya.bank.exceptions.BankException;
 import tech.reliab.course.rykovaya.bank.service.BankService;
 
 import java.util.ArrayList;
@@ -20,33 +21,40 @@ public class BankServiceImpl implements BankService {
 
     @Override
     public void subtractMoney(Bank bank, Double sumMoney) {
-        Double sum = bank.getMoney();
-        if (sumMoney > sum)
-            System.out.println(String.format( "У банка не хватает %.2f денег",sumMoney-sum));
-        else
+        try {
+            Double sum = bank.getMoney();
+            if (sumMoney > sum)
+                throw new BankException("Ошибка вычитания денег", String.format( "У банка не хватает %f денег",sumMoney-sum));
             bank.setMoney(sum - sumMoney);
+        } catch (BankException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
     public void addBankATM (Bank bank, BankATM bankATM){
 
-        if (bankATM.getBank() != null)
-            System.out.println("Банкомат принадлежит другому банку");
-        else {
-            if (Objects.equals(bankATM.getBank(), bank))
+        try{
+            if (bankATM.getBank() != null)
+                throw new BankException("Попытка добавления банкомата", "Банкомат принадлежит другому банку");
+            if (Objects.equals(bankATM.getBank(),bank))
                 return;
             if (bank.getBankATMS() == null) {
-                ArrayList<BankATM> array = new ArrayList<BankATM>();
+                ArrayList<BankATM> array =new ArrayList<BankATM>();
                 array.add(bankATM);
                 bank.setBankATMS(array);
-            } else {
+            }
+            else{
                 ArrayList<BankATM> array = bank.getBankATMS();
                 array.add(bankATM);
                 bank.setBankATMS(array);
             }
 
             bankATM.setBank(bank);
+        } catch (BankException e) {
+            throw new RuntimeException(e);
         }
+
     }
 
     @Override
@@ -74,23 +82,26 @@ public class BankServiceImpl implements BankService {
 
     @Override
     public void addEmployee(Bank bank, Employee employee){
-        if (employee.getBank() != null)
-            System.out.println("Работник работает в другом банке");
-        else {
+        try{
+            if (employee.getBank() != null)
+                throw new BankException("Попытка добавления работника", "Работник работает в другом банке");
 
-            if (Objects.equals(employee.getBank(), bank))
+            if (Objects.equals(employee.getBank(),bank))
                 return;
             employee.setDistantWork(true);
             ArrayList<Employee> array;
             if (bank.getEmployees() == null) {
-                array = new ArrayList<>();
+                array =new ArrayList<>();
                 array.add(employee);
-            } else {
+            }
+            else{
                 array = bank.getEmployees();
                 array.add(employee);
             }
             bank.setEmployees(array);
             employee.setBank(bank);
+        } catch (BankException e) {
+            throw new RuntimeException(e);
         }
     }
 
@@ -99,6 +110,7 @@ public class BankServiceImpl implements BankService {
         if (!Objects.equals(employee.getBank(),bank)){
             return;
         }
+
 
         BankOfficeServiceImpl bankOfficeService =new BankOfficeServiceImpl();
 
@@ -122,10 +134,11 @@ public class BankServiceImpl implements BankService {
 
     @Override
     public void addOffice(Bank bank, BankOffice bankOffice){
-        if (bankOffice.getBank() != null)
-            System.out.println("Офис принадлежит другому банку");
-        else {
-            if (Objects.equals(bankOffice.getBank(), bank))
+        try {
+
+            if (bankOffice.getBank() != null)
+                throw new BankException("Попытка добавления офис", "Офис принадлежит другому банку");
+            if (Objects.equals(bankOffice.getBank(),bank))
                 return;
 
             ArrayList<BankOffice> array;
@@ -138,6 +151,8 @@ public class BankServiceImpl implements BankService {
             }
             bank.setBankOffices(array);
             bankOffice.setBank(bank);
+        } catch (BankException e) {
+            throw new RuntimeException(e);
         }
     }
 

@@ -22,7 +22,7 @@ public class Bank {
         this.employees = new ArrayList<>();
         this.clients = new ArrayList<>();
         Random random = new Random();
-        this.rating = random.nextInt(0, 100);
+        this.rating = random.nextInt(0, 1000);
         this.money = random.nextDouble(0, 1000000000);
         this.interestRate = 20.0- this.getRating() /5.0;;
     }

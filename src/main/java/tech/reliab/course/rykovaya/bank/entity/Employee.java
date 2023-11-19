@@ -39,7 +39,7 @@ public class Employee extends Person {
                 str += "\nМожет выдавать кредиты";
             }
             else{
-                str += "\nНе Может выдавать кредиты";
+                str += "\nНе может выдавать кредиты";
             }
         }
         else{
