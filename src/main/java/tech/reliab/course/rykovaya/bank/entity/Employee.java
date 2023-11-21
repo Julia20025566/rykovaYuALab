@@ -28,7 +28,7 @@ public class Employee extends Person {
 
     @Override
     public String toString() {
-        String str =  "\nEmployee \nИмя: " + getFullName() +
+        String str =  "\nИмя: " + getFullName() +
                 "\nДата рождения: " + birthday +
                 "\nДолжность: " + job +
                 "\nБанк: " + bank.getName();

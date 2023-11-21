@@ -32,7 +32,7 @@ public class BankOfficeServiceImpl implements BankOfficeService {
             office.setMoney(sumOffice - sumMoney);
             office.getBank().setMoney(sumBank - sumMoney);
         } catch (BankOfficeException e) {
-            throw new RuntimeException(e);
+            System.err.println(e.getMessage());
         }
     }
 
@@ -61,7 +61,7 @@ public class BankOfficeServiceImpl implements BankOfficeService {
             }
             bankATM.setBankOffice(office);
         } catch (BankOfficeException e) {
-            throw new RuntimeException(e);
+            System.err.println(e.getMessage());
         }
     }
 
@@ -71,7 +71,7 @@ public class BankOfficeServiceImpl implements BankOfficeService {
             return;
         ArrayList<BankATM> array = office.getBankATMS();
         array.remove(bankATM);
-        if (array.size() == 0)
+        if (array.isEmpty())
             office.setBankATMS(null);
         else
             office.setBankATMS(array);
@@ -106,7 +106,7 @@ public class BankOfficeServiceImpl implements BankOfficeService {
             employee.setBankOffice(office);
 
         } catch (BankOfficeException e) {
-            throw new RuntimeException(e);
+            System.err.println(e.getMessage());
         }
     }
 

@@ -29,7 +29,7 @@ public class Bank {
 
     @Override
     public String toString(){
-        return "\nBank \nНазвание банка: " + name +
+        return "\nНазвание банка: " + name +
                 "\nКоличество офисов: " + getBankOffices().size() +
                 "\nКоличество банкоматов: " + getBankATMS().size() +
                 "\nКоличество сотрудников: " + getEmployees().size() +

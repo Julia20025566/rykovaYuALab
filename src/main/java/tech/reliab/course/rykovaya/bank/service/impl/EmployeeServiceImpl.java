@@ -27,7 +27,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     public void toOfficeWork(Employee employee) {
 
         employee.setDistantWork(Boolean.FALSE);
-        permissionForCredit(employee, true);
+
     }
 
     @Override
@@ -49,7 +49,7 @@ public class EmployeeServiceImpl implements EmployeeService {
             AtmServiceImpl atmService = new AtmServiceImpl();
             atmService.turnOnATM(bankATM);
         } catch (EmployeeException e) {
-            throw new RuntimeException(e);
+            System.err.println(e.getMessage());
         }
     }
 

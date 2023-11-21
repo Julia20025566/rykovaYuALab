@@ -27,7 +27,7 @@ public class BankServiceImpl implements BankService {
                 throw new BankException("Ошибка вычитания денег", String.format( "У банка не хватает %f денег",sumMoney-sum));
             bank.setMoney(sum - sumMoney);
         } catch (BankException e) {
-            throw new RuntimeException(e);
+            System.err.println(e.getMessage());
         }
     }
 
@@ -52,7 +52,7 @@ public class BankServiceImpl implements BankService {
 
             bankATM.setBank(bank);
         } catch (BankException e) {
-            throw new RuntimeException(e);
+            System.err.println(e.getMessage());
         }
 
     }
@@ -73,7 +73,7 @@ public class BankServiceImpl implements BankService {
 
         ArrayList<BankATM> bankATMS = bank.getBankATMS();
         bankATMS.remove(bankATM);
-        if (bankATMS.size() != 0)
+        if (!bankATMS.isEmpty())
             bank.setBankATMS(bankATMS);
         else
             bank.setBankATMS(null);
@@ -101,7 +101,7 @@ public class BankServiceImpl implements BankService {
             bank.setEmployees(array);
             employee.setBank(bank);
         } catch (BankException e) {
-            throw new RuntimeException(e);
+            System.err.println(e.getMessage());
         }
     }
 
@@ -122,7 +122,7 @@ public class BankServiceImpl implements BankService {
 
         ArrayList<Employee> employees = bank.getEmployees();
         employees.remove(employee);
-        if (employees.size() != 0)
+        if (!employees.isEmpty())
             bank.setEmployees(employees);
         else
             bank.setEmployees(null);
@@ -152,7 +152,7 @@ public class BankServiceImpl implements BankService {
             bank.setBankOffices(array);
             bankOffice.setBank(bank);
         } catch (BankException e) {
-            throw new RuntimeException(e);
+            System.err.println(e.getMessage());
         }
     }
 
@@ -174,7 +174,7 @@ public class BankServiceImpl implements BankService {
 
         ArrayList<BankOffice> bankOffices = bank.getBankOffices();
         bankOffices.remove(bankOffice);
-        if (bankOffices.size() == 0)
+        if (bankOffices.isEmpty())
             bank.setBankOffices(null);
         else
             bank.setBankOffices(bankOffices);
@@ -214,7 +214,7 @@ public class BankServiceImpl implements BankService {
         ArrayList<User> users = bank.getClients();
         users.remove(user);
 
-        if (users.size() == 0)
+        if (users.isEmpty())
             bank.setClients(null);
         else
             bank.setClients(users);

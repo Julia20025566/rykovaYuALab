@@ -110,7 +110,7 @@ public class Main {
 
         System.out.println("Выберите id пользователя для которого вы будете брать кредит:");
         for (User user : users) {
-            System.out.println("Информация о пользователе" + user.getId() + ":\n" + user + "\n");
+            System.out.println("Информация о пользователе " + user.getId() + ":\n" + user + "\n");
         }
         System.out.print("Выбранный id: ");
         int choseUserID = input.nextInt();
@@ -183,7 +183,7 @@ public class Main {
                     }
                 }
                 if (c == 0) {
-                    throw new NoEligibleOffice();
+                    throw new NoEligibleOfficeException();
                 }
                 System.out.print("Выбранный id: ");
                 choseOfficeID = input.nextInt();
@@ -202,7 +202,7 @@ public class Main {
             if (!choseOffice.getMayApplyCredit())
                 throw new BankOfficeException("Попытка получить кредит", "Выбранный офис не выдаёт кредиты");
 
-        } catch (BankOfficeException | NoEligibleOffice e) {
+        } catch (BankOfficeException | NoEligibleOfficeException e) {
             System.err.println(e.getMessage());
             return;
         }

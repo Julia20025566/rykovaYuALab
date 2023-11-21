@@ -1,8 +1,7 @@
 package tech.reliab.course.rykovaya.bank.service.impl;
 
 import tech.reliab.course.rykovaya.bank.entity.*;
-import tech.reliab.course.rykovaya.bank.exceptions.BankOfficeException;
-import tech.reliab.course.rykovaya.bank.exceptions.CreditExtension;
+import tech.reliab.course.rykovaya.bank.exceptions.*;
 import tech.reliab.course.rykovaya.bank.service.AtmService;
 import tech.reliab.course.rykovaya.bank.service.CreditAccountService;
 import tech.reliab.course.rykovaya.bank.service.PaymentAccountService;
@@ -41,19 +40,19 @@ public class CreditAccountServiceImpl implements CreditAccountService {
     {
         try {
             if (!bankOffice.getStatus())
-                throw new CreditExtension("Попытка получить кредит", "Выбранный офис не работает");
+                throw new BankOfficeException("Попытка получить кредит", "Выбранный офис не работает");
             if (!bankOffice.getMaySetATM())
-                throw new CreditExtension("Попытка получить кредит", "В офисе нет банкоматов");
+                throw new BankAtmException("Попытка получить кредит", "В офисе нет банкоматов");
             if (bankOffice.getMoney() < amount)
-                throw new CreditExtension("Попытка получить кредит", "В офисе не хватает денег");
+                throw new NoBankMoneyException();
             if (!bankOffice.getMayApplyCredit())
-                throw new CreditExtension("Попытка получить кредит", "Выбранный офис не выдаёт кредиты");
+                throw new BankOfficeException("Попытка получить кредит", "Выбранный офис не выдаёт кредиты");
             if (!employee.getCanLend())
-                throw new CreditExtension("Попытка получить кредит", "Выбранный сотрудник не выдаёт кредит");
+                throw new EmployeeException("Попытка получить кредит", "Выбранный сотрудник не выдаёт кредит");
             if (user.getCreditRating() < 500 && bankOffice.getBank().getInterestRate() > 50)
-                throw new CreditExtension("Попытка получить кредит", "Клиенту отказано в выдаче кредита");
+                throw new BadUserRatingException(bankOffice.getBank().getInterestRate(), user.getCreditRating());
             if (user.getCreditAccounts()!=null && checkCreditAcc(user, bankOffice.getBank()) != -1)
-                throw new CreditExtension("Попытка получить кредит", "У клиента уже есть кредит в этом банке");
+                throw new CreditException("Попытка получить кредит", "У клиента уже есть кредит в этом банке");
 
             for (BankATM bankATM : bankOffice.getBankATMS()) {
                 if (bankATM.getStatus() == StatusATM.Work && bankATM.getMoney() >= amount) {
@@ -81,8 +80,8 @@ public class CreditAccountServiceImpl implements CreditAccountService {
                     return;
                 }
             }
-            throw new CreditExtension("Попытка получить кредит", "Ни в одном из банкоматов нету денег");
-        }catch (CreditExtension e) {
+            throw new CreditException("Попытка получить кредит", "Ни в одном из банкоматов нет денег");
+        }catch (CreditException | BankOfficeException | BadUserRatingException | EmployeeException | NoBankMoneyException | BankAtmException e) {
             System.err.println(e.getMessage());
         }
     }
@@ -91,7 +90,7 @@ public class CreditAccountServiceImpl implements CreditAccountService {
     public void closeCredit(User user, CreditAccount creditAccount, LocalDate ourDate){
         try {
             if (ourDate.isBefore(creditAccount.getEndDate()))
-                throw new CreditExtension("Попытка закрыть кредит", "Время для закрытия кредита ещё не наступило");
+                throw new CreditException("Попытка закрыть кредит", "Время для закрытия кредита ещё не наступило");
 
             ArrayList<CreditAccount> creditAccounts = user.getCreditAccounts();
             creditAccounts.remove(creditAccount);
@@ -100,8 +99,8 @@ public class CreditAccountServiceImpl implements CreditAccountService {
             else
                 user.setCreditAccounts(creditAccounts);
 
-        } catch (CreditExtension e) {
-            throw new RuntimeException(e);
+        } catch (CreditException e) {
+            System.err.println(e.getMessage());
         }
     }
 }

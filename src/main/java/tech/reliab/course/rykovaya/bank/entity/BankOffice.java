@@ -36,7 +36,7 @@ public class BankOffice{
 
     @Override
     public String toString() {
-        String str =  "\nBankOffice \nНазвание офиса: " + name +
+        String str =  "\nНазвание офиса: " + name +
                 "\nБанк: " + bank.getName() +
                 "\nАдрес: " + address +
                 "\nСтатус: ";

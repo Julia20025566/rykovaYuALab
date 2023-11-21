@@ -75,7 +75,7 @@ public class PaymentAccountServiceImpl implements PaymentAccountService {
                 bankService.deleteUser(bank,user);
             }
         } catch (PaymentException e) {
-            throw new RuntimeException(e);
+            System.err.println(e.getMessage());
         }
     }
 }
