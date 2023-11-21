@@ -55,7 +55,7 @@ public class Main {
                     atmService.addMoney(bankATM, 12313.0);
                     for (int k = 0; k < 4; k++) {
                         int temp = 5 * (j + 3 * i) + k;
-                        Employee employee = employeeService.create(temp, String.format("Григорий %d", temp), String.format("Потёмкин %d", temp), new Date(19081917), String.format("Работа%d", k), (double) 500 * k);
+                        Employee employee = employeeService.create(temp, String.format("Григорий#%d", temp), String.format("Потёмкин#%d", temp), new Date(19081917), String.format("Работа%d", k), (double) 500 * k);
                         if (k % 2 == 0) {
                             employee.setCanLend(false);
                         }
@@ -149,8 +149,7 @@ public class Main {
                 choseBank = banks.get(index);
         }
         BankOffice choseOffice = null;
-        int choseOfficeID = -1;
-        boolean ch = false;
+        int choseOfficeID;
 
 
         try {
